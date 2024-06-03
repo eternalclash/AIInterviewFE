@@ -1,0 +1,228 @@
+.main {
+  width: 100%;
+  height: 100vh;
+  background-color: #212121;
+  display: flex;
+  justify-content: center;
+}
+
+.chat {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1vh;
+}
+
+.saveBtn {
+  font-size: 0.8rem;
+  cursor: pointer;
+  background-color: var(--gray-400);
+  width: 25%;
+}
+
+.ml {
+  font-size: 0.9rem;
+  color: white;
+  border: none; /* 테두리 제거 */
+  outline: none; /* 포커스 아웃라인 제거 */
+  background: none; /* 배경색 제거 */
+  box-shadow: none; /* 박스 그림자 제거 */
+  font-family: Arial, sans-serif; /* 글꼴 설정 */
+  font-size: 1rem; /* 글자 크기 설정 */
+  width: 100%;
+}
+
+.circle1 {
+  width: 3rem;
+  height: 3rem;
+  background: brown;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border-radius: 50%;
+}
+.circle2 {
+  width: 3rem;
+  height: 3rem;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  border-radius: 50%;
+}
+
+.sidebar {
+  width: 25%;
+  height: 100vh;
+  background-color: #171717;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.component {
+  width: 85%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 1.3rem;
+  width: 60%;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+}
+.represent {
+  display: flex;
+  height: 5vh;
+  width: 100%;
+  justify-content: space-around;
+  /* margin: 0.5vh 0; */
+}
+.representSub {
+  width: 49.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.05rem solid var(--gray-500);
+  border-radius: 3%;
+}
+.alertText {
+  margin: 1vh 0;
+  font-size: 0.7rem;
+  color: var(--gray-400);
+}
+.title {
+  width: 85%;
+  height: 3vh;
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+
+  cursor: pointer;
+}
+
+.line {
+  width: 100%;
+  height: 2vh;
+}
+
+.mr {
+  margin-right: 0.5vw;
+}
+
+.sideBtn {
+  width: 85%;
+  height: 3.5vh;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  border: 1px solid white;
+  padding-left: 1vw;
+  margin-bottom: 1vh;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sideBtn.clicked {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.title2 {
+  width: 85%;
+  height: 3.5vh;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.sideComponent {
+  width: 85%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.dateTitle {
+  color: #9b9b9b;
+  font-size: 0.7rem;
+  margin-bottom: 0.5vh;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--gray-300); /* 회색 테두리 */
+  border-radius: 0.5rem; /* 둥근 모서리 */
+  width: 100%; /* 너비 설정 */
+  margin-top: 1vh;
+}
+
+.search-input {
+  border: none; /* 테두리 제거 */
+  outline: none; /* 포커스 아웃라인 제거 */
+  background: none; /* 배경색 제거 */
+  padding: 0 1vw; /* 패딩 제거 */
+  margin: 2vh 0; /* 마진 제거 */
+  box-shadow: none; /* 박스 그림자 제거 */
+  font-family: Arial, sans-serif; /* 글꼴 설정 */
+  font-size: 1rem; /* 글자 크기 설정 */
+  width: 100%;
+  color: white; /* 글자 색상 설정 */
+}
+
+.search-button {
+  background-color: var(--gray-600); /* 버튼 배경색 */
+  color: var(--white); /* 버튼 글자색 */
+  border: none;
+  margin-right: 1vw;
+  border-radius: 4px; /* 버튼 둥근 모서리 */
+  cursor: pointer; /* 마우스 오버 시 포인터 */
+  transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
+}
+
+.search-button:hover {
+  background-color: var(--gray-900); /* 마우스 오버 시 버튼 배경색 변경 */
+}
+
+/* 사이드바의 스크롤바 전체 크기 설정 */
+.sidebar::-webkit-scrollbar {
+  width: 12px; /* 스크롤바의 너비 */
+}
+
+/* 스크롤바의 트랙 (바탕) 스타일 설정 */
+.sidebar::-webkit-scrollbar-track {
+  background: #171717; /* 스크롤바 트랙의 배경색 */
+  border-radius: 10px; /* 트랙의 둥근 모서리 */
+}
+
+/* 스크롤바의 핸들 (스크롤 되는 부분) 스타일 설정 */
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #000000; /* 스크롤바 핸들의 색상 */
+  border-radius: 10px; /* 핸들의 둥근 모서리 */
+  border: 3px solid #171717; /* 핸들의 바깥쪽에 보이는 테두리 (옵션) */
+}
+
+/* 스크롤바 핸들에 마우스 호버시 스타일 */
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* 호버 시 스크롤바 핸들의 색상 변경 */
+}

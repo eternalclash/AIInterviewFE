@@ -1,0 +1,14 @@
+.header {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  height: 3vh;
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+  display: flex;
+  align-items: center;
+  margin-right: 1vw;
+  background-color: var(--gray-600);
+  padding: 0 2vw;
+  border-radius: 3%;
+}
