@@ -10,7 +10,7 @@ import { AiFillProduct } from "react-icons/ai";
 import { MdUpload } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
 import Side from "@/components/Side";
-const messages = () => {
+const Messages = () => {
   const router = useRouter();
   const messages = useRecoilValue(messageState);
   console.log(messages);
@@ -52,4 +52,4 @@ const messages = () => {
   );
 };
 
-export default messages;
+export default Messages;

@@ -79,7 +79,7 @@ const Play = ({ list, onSelect }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   return {
     props: {},
   };

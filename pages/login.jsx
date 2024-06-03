@@ -1,7 +1,7 @@
 import useUserStore from "@/store/user";
 import { GetServerSideProps } from "next";
 
-const login = () => {
+const Login = () => {
   const {
     name,
     password,
@@ -57,10 +57,10 @@ const login = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   return {
     props: {},
   };
 };
 
-export default login;
+export default Login;

@@ -7,9 +7,14 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { messageState } from "@/state/messages";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import { LIST_LIST, PLAY_LIST, PRESET_LIST, SIDE_TYPE } from "@/utils/constants";
+import {
+  LIST_LIST,
+  PLAY_LIST,
+  PRESET_LIST,
+  SIDE_TYPE,
+} from "@/utils/constants";
 import Side from "@/components/Side";
-const main = ({ initialData }) => {
+const Main = ({ initialData }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [savedMessages, setSavedMessages] = useRecoilState(messageState);
@@ -120,7 +125,7 @@ const main = ({ initialData }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   return {
     props: {
       initialData: PRESET_LIST,
@@ -128,4 +133,4 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default main;
+export default Main;
