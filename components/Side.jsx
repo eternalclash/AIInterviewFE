@@ -37,7 +37,7 @@ const Sidebar = () => {
   const handleSelectMessage = (item) => {
     // 여기서 item은 { question, answer } 객체를 포함할 것으로 예상
     setMessageState({ question: item.question, answer: item.answer });
-    router.push('/messages')
+    router.push("/messages");
   };
   const router = useRouter();
   const navigateToMessage = (idx) => {
@@ -47,7 +47,7 @@ const Sidebar = () => {
   return (
     <div className={styles.sidebar}>
       <div style={{ minHeight: "25vh", width: "85%" }}>
-        <div className={styles.title}>
+        <div className={styles.title} onClick={() => router.push("/")}>
           <AiFillCodepenCircle className={styles.mr} size={20} />
           AI면접리스트 생성기
         </div>

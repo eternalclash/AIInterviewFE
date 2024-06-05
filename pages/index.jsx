@@ -63,61 +63,158 @@ const Main = ({ initialData }) => {
 
   return (
     <div className={styles.main}>
-      <Side />
       <div className={styles.component}>
         <div></div>
-        {messages.length == 0 && (
-          <div className={styles.center}>
-            <AiFillCodepenCircle size={50} />
-            <div>면접질문들을 생성해보아요! </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "1.4rem",
+            width: "95%",
+            justifyContent: "flex-start",
+            marginBottom: "1vh",
+          }}
+        >
+          <AiFillCodepenCircle size={50} />
+          <div style={{ fontSize: "1.8rem" }}>
+            필요한 면접질문들을 준비해봤어요!
           </div>
-        )}
-        <div className={styles.center}>
-          {messages.map((message, index) => (
-            <div key={index} className={styles.chat}>
-              {message.sender === "bot" ? (
-                <div>
-                  <AiFillCodepenCircle size={50} />
-                  <input
-                    className={styles.ml}
-                    value={message.text}
-                    onChange={(e) => handleEditChange(e.target.value, index)}
-                  />
-                  <div
-                    className={styles.saveBtn}
-                    onClick={() => handleSave(index)}
-                  >
-                    저장하기
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <FaRegUserCircle size={50} />
-                  <input
-                    className={styles.ml}
-                    value={message.text}
-                    onChange={(e) => handleEditChange(e.target.value, index)}
-                  />
-                </div>
-              )}
-            </div>
-          ))}
         </div>
-        <div className={styles.bottom}>
-          <div className={styles["search-container"]}>
-            <input
-              type="text"
-              placeholder="면접 질문을 만들어보아요"
-              className={styles["search-input"]}
-              value={input}
-              onChange={handleInputChange}
-            />
-            <button onClick={handleSubmit} className={styles["search-button"]}>
-              <MdUpload size={25} />
-            </button>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr",
+            gap: "1vw",
+            width: "95%",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
           </div>
-          <div className={styles.alertText}>
-            면접리스트 생성기는 잘못된 정보를 생성할 수 있습니다.
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "1.4rem",
+            width: "95%",
+            justifyContent: "flex-start",
+            marginBottom: "1vh",
+            marginTop: "4vh",
+          }}
+        >
+          <AiFillCodepenCircle size={50} />
+          <div style={{ fontSize: "1.8rem" }}>
+            사용자가 제일 많이 선택한 질문들을 준비해보시는 게 어떠신가요?
+          </div>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr",
+            gap: "1vw",
+            width: "95%",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
+          </div>
+          <div
+            style={{
+              width: "100%",
+              border: "1px solid",
+              borderRadius: "1px",
+              padding: "1%",
+              fontSize: "1.4rem",
+            }}
+          >
+            <div>인덱스란 무엇인가요?</div>
+            <div style={{ fontSize: "0.8rem" }}>데이터베이스</div>
           </div>
         </div>
       </div>

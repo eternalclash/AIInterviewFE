@@ -1,6 +1,10 @@
+import { useState, useEffect, useRef } from "react";
 import useUserStore from "@/store/user";
 import { GetServerSideProps } from "next";
-
+import styles from "@/styles/main.module.css";
+import Image from "next/image";
+import { FaLongArrowAltRight } from "react-icons/fa";
+import { AiFillCodepenCircle } from "react-icons/ai";
 const Login = () => {
   const {
     name,
@@ -11,53 +15,65 @@ const Login = () => {
     loginHandler,
     navigateMain,
   } = useUserStore();
+  const [index, setIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const texts = [
+    "샤딩이 무엇인지 설명해주실 수 있으실까요?",
+    "HTTP에 대해 설명해주세요.",
+    "멀티스레드의 장단점은 무엇인가요?",
+  ];
+  const typingDelay = 100;
+  const nextTextDelay = 2000; // 다음 텍스트로 넘어가기 전 지연 시간(ms)
+  const refIndex = useRef(index);
+
+  useEffect(() => {
+    refIndex.current = index;
+  }, [index]);
+  const typeNextChar = (charIndex) => {
+    if (charIndex < texts[index].length) {
+      setDisplayText((prev) => prev + texts[index].charAt(charIndex));
+      setTimeout(() => typeNextChar(charIndex + 1), typingDelay);
+    } else {
+      // 현재 텍스트 타이핑이 끝나면 다음 텍스트로 넘어간다
+      setTimeout(() => {
+        setDisplayText("");
+        setIndex((prevIndex) => (prevIndex + 1) % texts.length);
+      }, nextTextDelay);
+    }
+  };
+
+  useEffect(() => {
+    if (texts.length > 0) {
+      setDisplayText("");
+      typeNextChar(0);
+    }
+  }, [index]); // index가 바뀔 때마다 텍스트를 다시 타이핑 시작
 
   return (
-    <main className="w-full bg-yellow-light h-screen m-0 p-0 flex justify-center items-center">
-      <div className="flex shadow-3xl border-solid border-2 bg-yellow-dark w-80 h-60 rounded-2xl flex-col justify-around items-center">
-        <div className="w-full mx-4">
-          <div className="w-full mb-2 text-center font-bold">로그인</div>
-          <div className="flex w-full border-solid"></div>
-        </div>
-        {errorObj && <div>{errorObj?.errorMessage}</div>}
-        <div className="flex w-11/12 justify-center mx-4 h-8 rounded bg-white ">
-          <input
-            className="w-full pl-2 pd bg-transparent border-none"
-            value={name}
-            type="text"
-            onChange={nameHandler}
-            placeholder="아이디를 입력해주세요."
-          />
-        </div>
-        <div className="flex w-11/12 justify-center w-100 mx-4 h-8 rounded bg-white">
-          <input
-            type="password"
-            value={password}
-            onChange={passwordHandler}
-            className="w-full pl-2 bg-transparent border-none"
-            placeholder="비밀번호를 입력해주세요."
-          />
-        </div>
-        <div className="flex w-11/12 h-8 mx-4 justify-around">
-          <div
-            onClick={loginHandler}
-            className="hover:cursor-pointer hover:w-40 border-solid bg-aqua-dark shadow-xx w-20 rounded flex justify-center items-center text-sm  "
-          >
-            확인
-          </div>
-          <div
-            onClick={navigateMain}
-            className=" hover:cursor-pointer hover:w-40 border-solid bg-peach-dark shadow-xx w-20 rounded flex justify-center items-center text-sm "
-          >
-            취소
+    <div className={styles.login}>
+      <div className={styles.loginFont}>"{displayText}"</div>
+      <div className={styles.loginFont}> 에 대한 면접질문을 대비해보세요.</div>
+      <div style={{ display: "flex", alignItems: "center", marginTop: "3vh" }}>
+        <div
+          style={{
+            marginRight: "1vw",
+            height: "5vh",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <AiFillCodepenCircle size={40} />
+          <div style={{ paddingTop: "1%", marginRight: "0.5vw" }}>
+            당신을 위한 AI + INTERVIEW
           </div>
         </div>
+        <img src="/카카오톡.png" alt="카카오톡 로고" className={styles.kakao} />
       </div>
-    </main>
+    </div>
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProp = async (ctx) => {
   return {
     props: {},
   };
