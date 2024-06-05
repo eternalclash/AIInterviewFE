@@ -51,7 +51,7 @@ const Login = () => {
 
   return (
     <div className={styles.login}>
-      <div className={styles.loginFont}>"{displayText}"</div>
+      <div className={styles.loginFont}>&quot;{displayText}&quot;</div>
       <div className={styles.loginFont}> 에 대한 면접질문을 대비해보세요.</div>
       <div style={{ display: "flex", alignItems: "center", marginTop: "3vh" }}>
         <div
