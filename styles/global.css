@@ -1,4 +1,3 @@
-@tailwind pages;
 @tailwind components;
 @tailwind utilities;
 
@@ -31,5 +30,3 @@ body,
   --red-700: #b91c1c;
   --brand-purple: #ab68ff;
 }
-
-

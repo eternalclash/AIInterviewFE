@@ -4,9 +4,15 @@
   background-color: #212121;
   display: flex;
   justify-content: center;
+  scrollbar-width: none;
+}
+/* Chrome, Edge, and Safari */
+.interviewList::-webkit-scrollbar {
+  display: none;
 }
 
 .login {
+  position: absolute;
   width: 100%;
   height: 100vh;
   background-color: #212121;
@@ -77,6 +83,31 @@
   padding: 1%;
 }
 
+.ml3 {
+  font-size: 0.9rem;
+  color: white;
+  border: none; /* 테두리 제거 */
+  outline: none; /* 포커스 아웃라인 제거 */
+  background: none; /* 배경색 제거 */
+  box-shadow: none; /* 박스 그림자 제거 */
+  font-family: Arial, sans-serif; /* 글꼴 설정 */
+  font-size: 1rem; /* 글자 크기 설정 */
+  width: 92%;
+  height: 9.5vh;
+  borderradius: "1%";
+  resize: none; /* 사용자가 크기 조절하는 것을 방지 */
+  border-right: 1px solid white;
+  padding: 0.5% 1%;
+}
+.hideScrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hideScrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 .circle1 {
   width: 3rem;
   height: 3rem;
@@ -86,6 +117,12 @@
   align-items: center;
   color: white;
   border-radius: 50%;
+}
+.hiddenHistory {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
 }
 .circle2 {
   width: 3rem;
@@ -199,6 +236,7 @@
   display: flex;
   align-items: center;
   font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .sideComponent {

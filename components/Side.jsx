@@ -51,7 +51,7 @@ const Sidebar = () => {
           <AiFillCodepenCircle className={styles.mr} size={20} />
           AI면접리스트 생성기
         </div>
-        <div className={styles.title2}>
+        <div className={styles.title2} onClick={() => router.push("/simulate")}>
           <AiFillProduct className={styles.mr} size={20} />
           모의면접 실행하기
         </div>

@@ -25,6 +25,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/index.jsx", "pages/list.jsx", "pages/login.jsx", "components/Side.jsx", "components/lists/Preset.jsx", "components/lists/Play.jsx", "components/lists/List.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/index.jsx", "pages/list.jsx", "pages/login.jsx", "components/Side.jsx", "components/lists/Preset.jsx", "components/lists/Play.jsx", "components/lists/List.jsx", "pages/play.jsx", "pages/simulate.jsx"],
   "exclude": ["node_modules"]
 }

@@ -5,6 +5,7 @@ import styles from "@/styles/main.module.css";
 import Image from "next/image";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { AiFillCodepenCircle } from "react-icons/ai";
+import { useRouter } from "next/router";
 const Login = () => {
   const {
     name,
@@ -17,6 +18,7 @@ const Login = () => {
   } = useUserStore();
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
+  const router = useRouter();
   const texts = [
     "샤딩이 무엇인지 설명해주실 수 있으실까요?",
     "HTTP에 대해 설명해주세요.",
@@ -68,6 +70,17 @@ const Login = () => {
           </div>
         </div>
         <img src="/카카오톡.png" alt="카카오톡 로고" className={styles.kakao} />
+      </div>
+      <div
+        style={{
+          marginTop: "3vh",
+          color: "var(--gray-400)",
+          fontSize: "0.8rem",
+          cursor: "pointer",
+        }}
+        onClick={() => router.push("/")}
+      >
+        돌아가기
       </div>
     </div>
   );
