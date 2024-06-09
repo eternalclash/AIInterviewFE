@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaFolder, FaFile } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
+import { FaPlus } from "react-icons/fa";
 
 const Preset = ({ list, onSelect }) => {
   const [openedCategories, setOpenedCategories] = useState({});
@@ -15,7 +16,23 @@ const Preset = ({ list, onSelect }) => {
 
   return (
     <div>
-      {Object.entries(list).map(([category, questions], index) => (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          fontSize: "0.9rem",
+          height: "4vh",
+          cursor: "pointer",
+        }}
+        onClick={() => onSelect({
+          question:"",
+          answer:""
+        })}
+      >
+        <FaPlus style={{ paddingBottom: "0.5%", marginRight: "0.5vw" }} />
+        면접리스트 추가하기
+      </div>
+      {Object?.entries(list).map(([category, questions], index) => (
         <div key={index}>
           <div
             onClick={() => toggleCategory(category)}
@@ -66,6 +83,7 @@ const Preset = ({ list, onSelect }) => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
+                    width: "100%",
                   }}
                 >
                   {item.question}

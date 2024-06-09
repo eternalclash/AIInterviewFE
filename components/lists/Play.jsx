@@ -1,8 +1,9 @@
 import { GetServerSideProps } from "next";
 import styles from "@/styles/main.module.css";
-import { FaFolder, FaFile, FaPlayCircle } from "react-icons/fa";
+import { FaFolder, FaFile, FaPlayCircle, FaPlus } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
+import { useRouter } from "next/router";
 const Play = ({ list, onSelect }) => {
   const [openedCategories, setOpenedCategories] = useState({});
 
@@ -13,10 +14,23 @@ const Play = ({ list, onSelect }) => {
       [category]: !prev[category],
     }));
   };
-
+  const router = useRouter();
   return (
     <div>
-      {Object.entries(list || {}).map(([category, questions], index) => (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          fontSize: "0.9rem",
+          height: "4vh",
+          cursor: "pointer",
+        }}
+        onClick={() => router.push("/playList")}
+      >
+        <FaPlus style={{ paddingBottom: "0.5%", marginRight: "0.5vw" }} />
+        재생목록 추가하기
+      </div>
+      {Object.entries(list || {})?.map(([category, questions], index) => (
         <div key={index}>
           <div
             onClick={() => toggleCategory(category)}

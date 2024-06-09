@@ -8,10 +8,12 @@ function MyApp({ Component, pageProps }: any) {
   const queryClient: QueryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
+      {/* <script src="https://developers.kakao.com/sdk/js/kakao.js"></script> */}
+
       <RecoilRoot>
         <div style={{ display: "flex" }}>
           <Header />
-          <Sidebar/>
+          <Sidebar />
           <Component {...pageProps} />
         </div>
       </RecoilRoot>

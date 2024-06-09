@@ -37,9 +37,9 @@ const Play = () => {
     setAnswerHistory((prev) => [
       ...prev,
       {
-        question: questionItem.question,
-        userAnswer,
-        correctAnswer: questionItem.answer,
+        question: questionItem.question, //질문
+        userAnswer, //유저 답변
+        correctAnswer: questionItem.answer, //원래 답
       },
     ]);
     setAnsweredIndices((prev) => [...prev, currentIndex]);
@@ -111,11 +111,12 @@ const Play = () => {
                 }}
                 style={{
                   height: "7vh",
-                  background: answeredIndices.includes(index)
-                    ? "red"
-                    : currentIndex === index
-                    ? "gray"
-                    : "black",
+                  background:
+                    currentIndex === index
+                      ? "gray"
+                      : answeredIndices.includes(index)
+                      ? "red"
+                      : "black",
                   display: "flex",
                   alignItems: "center",
                   fontSize: "1.5rem",
@@ -123,7 +124,7 @@ const Play = () => {
                   border: "1px solid white",
                   cursor: "pointer",
                 }}
-              >
+              >ㅋ
                 <MdOutlineFormatListBulleted
                   style={{ marginRight: "0.5vw", paddingBottom: "0.5vh" }}
                 />

@@ -75,8 +75,8 @@
   font-family: Arial, sans-serif; /* 글꼴 설정 */
   font-size: 1rem; /* 글자 크기 설정 */
   width: 90%;
-  min-height: 10vh;
-  max-height: 40vh;
+
+  height: 40vh;
   resize: none; /* 사용자가 크기 조절하는 것을 방지 */
   background: var(--brand-purple);
   border-radius: 1%;

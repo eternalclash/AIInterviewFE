@@ -4,7 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 const List = ({ list, onSelect }) => {
   return (
     <div>
-      {list.map((item, idx) => (
+      {list?.map((item, idx) => (
         <div
           style={{
             display: "flex",
@@ -13,11 +13,13 @@ const List = ({ list, onSelect }) => {
             height: "4vh",
             cursor: "pointer",
           }}
+          onClick={() => onSelect(item)}
           key={idx}
         >
           <div
             style={{
               width: "10%",
+
               marginRight: "0.5vw",
             }}
           >
@@ -28,6 +30,7 @@ const List = ({ list, onSelect }) => {
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
+              width: "100%",
             }}
           >
             {item.question}
