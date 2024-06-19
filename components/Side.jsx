@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { AiFillCodepenCircle, AiFillProduct } from "react-icons/ai";
 import { messageState } from "@/state/messages";
 import { useEffect } from "react";
-import { getInterviews, getPresets, getSimulations } from "@/apis/api";
+import { getInterviews, getPresets, getSimulation } from "@/apis/api";
 import { get } from "http";
 
 const Sidebar = () => {
@@ -28,7 +28,7 @@ const Sidebar = () => {
         dataResponse = await getInterviews();
         break;
       case SIDE_TYPE.PLAY:
-        dataResponse = await getSimulations();
+        dataResponse = await getSimulation();
         break;
       case SIDE_TYPE.PRESET:
         dataResponse = await getPresets();
@@ -39,25 +39,23 @@ const Sidebar = () => {
     if (dataResponse?.data?.result) {
       setSidebar({ clicked: type, list: dataResponse.data.result });
     } else {
-      // 오류 처리 또는 기본 값 설정
       console.log("No data received or error in API response");
       setSidebar((prevState) => ({ ...prevState, clicked: type, list: [] }));
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await getPresets();
-      setSidebar((prevState) => ({
-        ...prevState,
-        list: response.data.result,
-      }));
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await getPresets();
+  //     setSidebar((prevState) => ({
+  //       ...prevState,
+  //       list: response.data.result,
+  //     }));
+  //   }
+  //   fetchData();
+  // }, []);
 
   const handleSelectMessage = (item) => {
-    // 여기서 item은 { question, answer } 객체를 포함할 것으로 예상
     setMessageState({
       question: item?.question,
       answer: item?.answer,
@@ -67,7 +65,6 @@ const Sidebar = () => {
   };
 
   const handleListMessage = (item) => {
-    // 여기서 item은 { question, answer } 객체를 포함할 것으로 예상
     setMessageState({
       question: item.question,
       answer: item.answer,

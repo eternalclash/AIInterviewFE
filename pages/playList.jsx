@@ -3,15 +3,22 @@ import { useRouter } from "next/router";
 import styles from "@/styles/main.module.css";
 import { TiPlus } from "react-icons/ti";
 import { FaPlayCircle } from "react-icons/fa";
-import { getInterviews } from "@/apis/api";
-
+import { getInterviews, postSimulations, getSimulation } from "@/apis/api";
+import { sidebarState } from "@/state/sidebarState.js";
+import { useRecoilState } from "recoil";
+import {
+  LIST_LIST,
+  PLAY_LIST,
+  PRESET_LIST,
+  SIDE_TYPE,
+} from "@/utils/constants.js";
 const PlayList = () => {
-  const [playlists, setPlaylists] = useState([]); // 모든 플레이리스트
-  const [selectedPlaylists, setSelectedPlaylists] = useState([]); // 선택된 플레이리스트들
-
+  const [playlists, setPlaylists] = useState([]);
+  const [selectedPlaylists, setSelectedPlaylists] = useState([]);
+  const [playlistName, setPlaylistName] = useState("");
+  console.log(selectedPlaylists);
   const router = useRouter();
-
-  // 플레이리스트를 불러오는 함수
+  const [{ clicked, list }, setSidebar] = useRecoilState(sidebarState);
   useEffect(() => {
     const fetchData = async () => {
       const response = await getInterviews();
@@ -19,23 +26,39 @@ const PlayList = () => {
     };
     fetchData();
   }, []);
-  console.log(playlists)
-  // 플레이리스트 클릭 핸들러
+
   const handlePlaylistClick = (playlist) => {
-    // 이미 선택된 플레이리스트인지 체크
     const index = selectedPlaylists.findIndex((p) => p.id === playlist.id);
     if (index === -1) {
-      // 선택되지 않았다면 추가
       setSelectedPlaylists([...selectedPlaylists, playlist]);
     } else {
-      // 이미 선택되었다면 제거
       setSelectedPlaylists(
         selectedPlaylists.filter((p) => p.id !== playlist.id)
       );
     }
   };
 
-  console.log(selectedPlaylists); // 현재 선택된 플레이리스트 확인
+  const handleCreatePlaylist = async () => {
+    const data = { simulationListName: playlistName };
+    const arr = [];
+    for (let x of selectedPlaylists) {
+      arr.push(x.id);
+    }
+    data["memberQAIds"] = arr;
+    await postSimulations(data);
+    window.alert("면접리스트 생성완료");
+    let dataResponse = await getSimulation();
+    setSidebar({
+      list: dataResponse?.data.result,
+      clicked: SIDE_TYPE.PLAY,
+    });
+    console.log(dataResponse)
+  };
+
+  // 선택된 항목의 순서를 찾아서 표시
+  const getOrderNumber = (playlist) => {
+    return selectedPlaylists.findIndex((p) => p.id === playlist.id) + 1;
+  };
 
   return (
     <div
@@ -63,6 +86,7 @@ const PlayList = () => {
       >
         재생목록을 선택해주세요
       </div>
+
       <div
         style={{
           display: "flex",
@@ -76,9 +100,37 @@ const PlayList = () => {
           marginBottom: "1vh",
         }}
       >
-        <TiPlus size={30} style={{ paddingBottom: "1" }} />
-        재생목록 만들기
+        <input
+          style={{
+            width: "25vw",
+            height: "4vh",
+            fontSize: "1.2rem",
+            paddingLeft: "0.5vw",
+            color: "black",
+          }}
+          placeholder="재생목록명을 만들어주세요"
+          value={playlistName}
+          onChange={(e) => setPlaylistName(e.target.value)}
+        />
+        <div
+          style={{
+            marginLeft: "1vw",
+            fontSize: "1.2rem",
+
+            borderRadius: "0.5vw",
+            cursor: playlistName ? "pointer" : "not-allowed",
+            color: playlistName ? "white" : "gray",
+            display: "flex",
+            alignItems: "center",
+          }}
+          disabled={!playlistName}
+          onClick={handleCreatePlaylist}
+        >
+          <TiPlus size={30} style={{ paddingBottom: "2%" }} />
+          재생목록 만들기
+        </div>
       </div>
+
       <div
         style={{
           fontSize: "2rem",
@@ -105,34 +157,17 @@ const PlayList = () => {
                 ? "white"
                 : "transparent",
               color: selectedPlaylists.includes(playlist) ? "black" : "inherit",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             {playlist.question}
+            {selectedPlaylists.includes(playlist) && (
+              <div style={{ color: "black" }}>{getOrderNumber(playlist)}</div>
+            )}
           </div>
         ))}
       </div>
-      {selectedPlaylists.length > 0 && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            width: "80%",
-            fontSize: "1.2rem",
-            justifyContent: "center",
-            cursor: "pointer",
-            marginBottom: "1vh",
-            background: "var(--gray-400)",
-            padding: "0.5%",
-          }}
-          onClick={() => router.push("/play")}
-        >
-          <FaPlayCircle
-            size={30}
-            style={{ paddingBottom: "1", marginRight: "0.5vw" }}
-          />
-          시작하기
-        </div>
-      )}
     </div>
   );
 };

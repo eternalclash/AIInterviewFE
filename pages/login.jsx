@@ -6,8 +6,9 @@ import Image from "next/image";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { AiFillCodepenCircle } from "react-icons/ai";
 import { useRouter } from "next/router";
-import { getPresets } from "@/apis/api";
+import { getIdToken, getPresets, postLogin } from "@/apis/api";
 const Login = () => {
+  const router = useRouter();
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -27,40 +28,40 @@ const Login = () => {
       document.body.removeChild(script);
     };
   }, []);
-  const kakaoLoginUrl =
-    "https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=http://ec2-13-125-147-142.ap-northeast-2.compute.amazonaws.com:8080/kakao/id-token";
+  useEffect(() => {
+    const { code } = router.query;
+    if (code) {
+      console.log("Received code:", code);
+      handleLogin(code);
+    }
+  }, [router]);
+
+  // Kakao 로그인 페이지로 리다이렉트
   const redirectToKakaoOAuth = () => {
+    const kakaoLoginUrl =
+      "https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=http://localhost:3000/login";
     window.location.href = kakaoLoginUrl;
-
-    
   };
 
-  const loginWithKakao = async () => {
-    // 카카오 로그인 요청
-    window.Kakao.Auth.login({
-      success: function (authObj) {
-        // 로그인 성공 시 토큰 정보 출력 및 사용자 정보 요청
-        console.log(authObj);
-        window.Kakao.API.request({
-          url: "/v2/user/me",
-          success: function (res) {
-            const kakaoAccount = res.kakao_account;
-            console.log(kakaoAccount);
-
-            // router.push("/main"); // 로그인 성공 후 리다이렉트
-          },
-          fail: function (error) {
-            console.error(error);
-          },
-        });
-      },
-      fail: function (err) {
-        console.error(err);
-      },
-    });
-    const response = await getPresets();
-    console.log(response.data.result);
+  // code를 사용하여 로그인
+  const handleLogin = async (code) => {
+    try {
+      const idToken = await getIdToken(code);
+      const response = await postLogin({
+        idToken: idToken.data.result.idToken,
+      });
+      console.log(response.data);
+      localStorage.setItem("refreshToken", response.data.result.refreshToken);
+      localStorage.setItem("accessToken", response.data.result.accessToken);
+      console.log("Login successful");
+      router.push("/");
+      // 로그인 후 리다이렉트 등의 추가 로직
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+    }
   };
+
   const {
     name,
     password,
@@ -72,7 +73,7 @@ const Login = () => {
   } = useUserStore();
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
-  const router = useRouter();
+
   const texts = [
     "샤딩이 무엇인지 설명해주실 수 있으실까요?",
     "HTTP에 대해 설명해주세요.",

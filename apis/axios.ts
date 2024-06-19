@@ -1,9 +1,8 @@
 import axios from "axios";
 
 export const BASE_URL: string =
-  // "http://localhost:8080"
   "http://ec2-13-125-147-142.ap-northeast-2.compute.amazonaws.com:8080/";
-  
+
 export const HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Content-Type": "application/json",
@@ -14,16 +13,49 @@ export const axiosClient = axios.create({
   headers: HEADERS,
 });
 
-axiosClient.interceptors.request.use(async (config: any) => {
-  try {
-    const accessToken = localStorage.getItem("access_token");
-    // if (accessToken != null && config.headers) {
-    //   console.log("interceptors", await localStorage.getItem("access_token"));
-    //   config.headers["Authorization"] = `Bearer ${JSON.parse(accessToken)}`;
-    // }
-    config.headers[
-      "Authorization"
-    ] = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhaS1pbnRlcnZpZXctc2ltdWxhdG9yIiwic3ViIjoiNWI0ZDk2NzAtZjA1NS00YjljLTg2YjEtMWZhMGU1MWFiOGJkIiwiaWF0IjoxNzE3ODYwNjE4LCJleHAiOjg2NDAxNzE3ODYwNjE4LCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJyb2xlIjoi7J2867CYIOycoOyggCJ9.uz_QsR4nM3EH5PqqA7L6sviqA3wijMy7D5QRkcfa4j0`;
+axiosClient.interceptors.request.use(
+  (config: any) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
     return config;
-  } catch {}
-});
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+axiosClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    // if (error.response.status === 401 && !originalRequest._retry) {
+      if(true) {
+      originalRequest._retry = true;
+      try {
+        // Assuming refreshToken API endpoint
+        const refreshToken = localStorage.getItem("refreshToken");
+        const response = await axios.post(`${BASE_URL}/refresh`, {
+          refreshToken,
+        });
+
+        if (response.data) {
+          localStorage.setItem("accessToken", response.data.accessToken);
+          localStorage.setItem("refreshToken", response.data.refreshToken);
+          axiosClient.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${response.data.accessToken}`;
+          return axiosClient(originalRequest);
+        }
+      } catch (refreshError) {
+        // console.error("Refresh token failed", refreshError);
+        // alert("로그인 해주셔야 하는 서비스입니다");
+        // window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);

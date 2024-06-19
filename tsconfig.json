@@ -19,12 +19,12 @@
     "plugins": [
       {
         "name": "next"
-      }
+      },
     ],
     "paths": {
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/index.jsx", "pages/list.jsx", "pages/login.jsx", "components/Side.jsx", "components/lists/Preset.jsx", "components/lists/Play.jsx", "components/lists/List.jsx", "pages/play.jsx", "pages/simulate.jsx", "apis/api.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "pages/index.jsx", "pages/list.jsx", "pages/login.jsx", "components/Side.jsx", "components/lists/Preset.jsx", "components/lists/Play.jsx", "components/lists/List.jsx", "pages/play.jsx", "pages/simulate.jsx", "apis/api.js", "pages/speech.jsx"],
   "exclude": ["node_modules"]
 }

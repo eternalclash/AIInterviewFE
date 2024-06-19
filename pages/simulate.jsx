@@ -1,17 +1,50 @@
-import { useState } from "react";
-import { GetServerSideProps } from "next";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import styles from "@/styles/main.module.css";
 import { TiPlus } from "react-icons/ti";
 import { FaPlayCircle } from "react-icons/fa";
 import { useRouter } from "next/router";
-
+import { getSimulations } from "@/apis/api"; // Adjust the path according to your project structure
+import AudioPermissionModal from "@/components/AudioPermissionModal"; // Adjust the path according to your project structure
+import { useRecoilState } from "recoil";
+import { playListState } from "@/state/playState.js";
 const Simulate = () => {
+  const [playState, setPlayState] = useRecoilState(playListState);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-
+  const [audioGranted, setAudioGranted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Add modal state
   const router = useRouter();
-  const handlePlaylistClick = (playlist) => {
-    setSelectedPlaylist(playlist);
+
+  const { data, isLoading, isError, isSuccess } = useQuery({
+    queryKey: ["simulations"],
+    queryFn: getSimulations,
+  });
+  console.log(data);
+
+  useEffect(() => {
+    checkAudioPermission();
+  }, []);
+
+
+  const checkAudioPermission = async () => {
+    try {
+      await navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          setAudioGranted(true);
+          stream.getTracks().forEach((track) => track.stop());
+        });
+    } catch (error) {
+      setAudioGranted(false);
+    }
   };
+
+  const handlePlaylistClick = (playlist) => {
+    setSelectedPlaylist(playlist[0]);
+    setPlayState(playlist[1])
+  };
+
+  const playList = isSuccess ? data : {};
 
   return (
     <div
@@ -68,27 +101,27 @@ const Simulate = () => {
         }}
         className={styles.interviewList}
       >
-        {["재생목록1", "재생목록2", "재생목록3", "재생목록4", "재생목록5"].map(
-          (playlist, index) => (
-            <div
-              key={index}
-              onClick={() => handlePlaylistClick(playlist)}
-              style={{
-                marginBottom: "1vh",
-                border: "1px solid white",
-                borderRadius: "1%",
-                padding: "1%",
-                fontSize: "1.3rem",
-                cursor: "pointer",
-                background:
-                  selectedPlaylist === playlist ? "white" : "transparent",
-                color: selectedPlaylist === playlist ? "black" : "inherit",
-              }}
-            >
-              {playlist}
-            </div>
-          )
-        )}
+        {isLoading && <p>Loading...</p>}
+        {isError && <p>Error loading playlists</p>}
+        {Object?.entries(playList).map((playlist, index) => (
+          <div
+            key={index}
+            onClick={() => handlePlaylistClick(playlist)}
+            style={{
+              marginBottom: "1vh",
+              border: "1px solid white",
+              borderRadius: "1%",
+              padding: "1%",
+              fontSize: "1.3rem",
+              cursor: "pointer",
+              background:
+                selectedPlaylist === playlist[0] ? "white" : "transparent",
+              color: selectedPlaylist === playlist[0] ? "black" : "inherit",
+            }}
+          >
+            {playlist[0]}
+          </div>
+        ))}
       </div>
 
       {selectedPlaylist && (
@@ -104,7 +137,13 @@ const Simulate = () => {
             background: "var(--gray-400)",
             padding: "0.5%",
           }}
-          onClick={() => router.push("/play")}
+          onClick={() => {
+            if (audioGranted) {
+              router.push("/play");
+            } else {
+              setIsModalOpen(true); // Show permission request modal
+            }
+          }}
         >
           <FaPlayCircle
             size={30}
@@ -112,6 +151,10 @@ const Simulate = () => {
           />
           시작하기
         </div>
+      )}
+
+      {isModalOpen && (
+        <AudioPermissionModal onClose={() => setIsModalOpen(false)} />
       )}
     </div>
   );
