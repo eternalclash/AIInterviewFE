@@ -53,6 +53,7 @@ const Login = () => {
       console.log(response.data);
       localStorage.setItem("refreshToken", response.data.result.refreshToken);
       localStorage.setItem("accessToken", response.data.result.accessToken);
+      localStorage.setItem("userId",response.data.result.loginMemberId);
       console.log("Login successful");
       router.push("/");
       // 로그인 후 리다이렉트 등의 추가 로직

@@ -38,6 +38,7 @@ const QuestionAnswerArea = ({
     }
   }, [answerHistory]);
 
+  console.log(questionItem);
   if (answeredIndices.includes(currentIndex)) {
     return (
       <div
@@ -71,41 +72,42 @@ const QuestionAnswerArea = ({
             </div>
             <div className={styles.ml4}>{questionItem?.question}</div>
           </div>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-              marginRight: "1vw",
-              height: "40h",
-            }}
-          >
+          {problemList[currentIndex].userAnswer && (
             <div
               style={{
+                width: "100%",
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                padding: "1vh 0",
-                width: "80%",
+                flexDirection: "column",
+                alignItems: "flex-end",
                 marginRight: "1vw",
+                height: "40h",
               }}
             >
-              <RiQuestionAnswerFill
-                size={30}
-                style={{ marginRight: "0.5vw" }}
-              />
-              <div>질문 정답</div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  padding: "1vh 0",
+                  width: "80%",
+                  marginRight: "1vw",
+                }}
+              >
+                <RiQuestionAnswerFill
+                  size={30}
+                  style={{ marginRight: "0.5vw" }}
+                />
+                <div>질문 정답</div>
+              </div>
+              <div
+                contentEditable={false}
+                style={{ marginRight: "1vw" }}
+                className={styles.ml2}
+              >
+                {problemList[currentIndex].userAnswer}
+              </div>
             </div>
-            <div
-              contentEditable={false}
-              style={{ marginRight: "1vw" }}
-              className={styles.ml2}
-            >
-              {problemList[currentIndex].userAnswer}
-            </div>
-          </div>
-
+          )}
           <div
             style={{
               width: "100%",
@@ -281,6 +283,7 @@ const QuestionAnswerArea = ({
           userAnswer={userAnswer}
           setUserAnswer={setUserAnswer}
           handleSubmitAnswer={handleSubmitAnswer}
+          currentIndex={currentIndex}
         />
       )}
     </div>

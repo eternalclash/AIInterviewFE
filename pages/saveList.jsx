@@ -4,50 +4,49 @@ import styles from "@/styles/main.module.css";
 import { TiPlus } from "react-icons/ti";
 import { FaPlayCircle } from "react-icons/fa";
 import { useRouter } from "next/router";
-import { getSimulations, startSimulation } from "@/apis/api"; // Adjust the path according to your project structure
+import {
+  getSimulations,
+  startSimulation,
+  getSimulationsLog,
+  getAudio,
+} from "@/apis/api"; // Adjust the path according to your project structure
 import AudioPermissionModal from "@/components/AudioPermissionModal"; // Adjust the path according to your project structure
 import { useRecoilState } from "recoil";
 import { playListState } from "@/state/playState.js";
-const Simulate = () => {
+import { audioState } from "@/state/audioUrls.js";
+
+const SaveList = () => {
   const [playState, setPlayState] = useRecoilState(playListState);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [audState, setAudioState] = useRecoilState(audioState);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(-1);
   const [audioGranted, setAudioGranted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Add modal state
   const router = useRouter();
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ["simulations"],
-    queryFn: getSimulations,
+    queryKey: ["saveList"],
+    queryFn: getSimulationsLog,
   });
-  console.log(data);
 
-  useEffect(() => {
-    checkAudioPermission();
-  }, []);
-
-  const checkAudioPermission = async () => {
-    try {
-      await navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then((stream) => {
-          setAudioGranted(true);
-          stream.getTracks().forEach((track) => track.stop());
-        });
-    } catch (error) {
-      setAudioGranted(false);
-    }
+  const handlePlaylistClick = async (playlist, index) => {
+    setSelectedPlaylist(index);
+    const length = playlist.simulationLogs.length;
+    const id = playlist.id;
+    const type = "audio/wav";
+    let data = {length,id,type}
+    const response = await getAudio(data);
+    console.log(response);
+    setPlayState(playlist.simulationLogs);
+    setAudioState(response.data.result.audioUrls);
   };
 
-  const handlePlaylistClick = (playlist) => {
-    setSelectedPlaylist(playlist[0]);
-    setPlayState(playList[playlist].simulationList);
-    console.log(playList[playlist]);
-    console.log(playState);
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString();
   };
 
-  console.log(selectedPlaylist);
-
-  const playList = isSuccess ? data : {};
+  const playList = isSuccess ? data : [];
+  console.log(playList, "playState");
 
   return (
     <div
@@ -62,7 +61,7 @@ const Simulate = () => {
           width: "100%",
         }}
       >
-        모의면접을 진행하겠습니다!
+        지난 모의면접을 확인해봅시다!
       </div>
       <div
         style={{
@@ -73,24 +72,7 @@ const Simulate = () => {
           marginBottom: "10vh",
         }}
       >
-        재생목록을 선택해주세요
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: "10%",
-          width: "100%",
-          paddingRight: "10%",
-          fontSize: "1.2rem",
-          justifyContent: "flex-end",
-          cursor: "pointer",
-          marginBottom: "1vh",
-        }}
-      >
-        <TiPlus size={30} style={{ paddingBottom: "1" }} />
-        재생목록 만들기
+        면접 목록을 확인해보세요!
       </div>
 
       <div
@@ -106,10 +88,10 @@ const Simulate = () => {
       >
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error loading playlists</p>}
-        {Object?.entries(playList).map(([playlist, x], index) => (
+        {playList?.map((p, index) => (
           <div
             key={index}
-            onClick={() => handlePlaylistClick(playlist)}
+            onClick={() => handlePlaylistClick(p, index)}
             style={{
               marginBottom: "1vh",
               border: "1px solid white",
@@ -117,17 +99,17 @@ const Simulate = () => {
               padding: "1%",
               fontSize: "1.3rem",
               cursor: "pointer",
-              background:
-                selectedPlaylist === playlist[0] ? "white" : "transparent",
-              color: selectedPlaylist === playlist[0] ? "black" : "inherit",
+              background: selectedPlaylist === index ? "white" : "transparent",
+              color: selectedPlaylist === index ? "black" : "inherit",
             }}
           >
-            {playList[playlist].simulationListName}
+            {p.title}
+            {formatDate(p.timestamp)}
           </div>
         ))}
       </div>
 
-      {selectedPlaylist && (
+      {selectedPlaylist >= 0 && (
         <div
           style={{
             display: "flex",
@@ -141,14 +123,11 @@ const Simulate = () => {
             padding: "0.5%",
           }}
           onClick={async () => {
-            if (audioGranted) {
-              console.log("플레이리스트명", selectedPlaylist);
+            console.log("플레이리스트명", selectedPlaylist);
 
-              await startSimulation({ simulationListName: selectedPlaylist });
-              router.push("/play");
-            } else {
-              setIsModalOpen(true); // Show permission request modal
-            }
+            await startSimulation({ simulationListName: selectedPlaylist });
+            console.log(selectedPlaylist);
+            router.push("/save");
           }}
         >
           <FaPlayCircle
@@ -172,4 +151,4 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-export default Simulate;
+export default SaveList;

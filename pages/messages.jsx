@@ -34,7 +34,7 @@ const Messages = () => {
   const [answer, setAnswer] = useState(messages.answer);
   const [presetQaId, setPresetQaId] = useState(messages?.presetQaId);
   const [isLoading, setLoading] = useState(false);
-  console.log(question);
+  console.log(messages);
   useEffect(() => {
     setQuestion(messages?.question);
     setAnswer(messages?.answer);

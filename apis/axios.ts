@@ -4,7 +4,7 @@ export const BASE_URL: string =
   "http://ec2-13-125-147-142.ap-northeast-2.compute.amazonaws.com:8080/";
 
 export const HEADERS = {
-  "Access-Control-Allow-Origin": "*",
+  // "Access-Control-Allow-Origin": "*",
   "Content-Type": "application/json",
 };
 
@@ -45,6 +45,8 @@ axiosClient.interceptors.response.use(
         if (response.data) {
           localStorage.setItem("accessToken", response.data.accessToken);
           localStorage.setItem("refreshToken", response.data.refreshToken);
+          localStorage.setItem("userId",response.data.result.loginMemberId);
+
           axiosClient.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${response.data.accessToken}`;

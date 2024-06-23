@@ -73,7 +73,7 @@ const PlayList = () => {
           width: "100%",
         }}
       >
-        모의면접을 진행하겠습니다!
+        모의면접을 저장해주세요!
       </div>
       <div
         style={{

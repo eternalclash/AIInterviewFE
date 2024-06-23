@@ -4,9 +4,12 @@ import { FaFolder, FaFile, FaPlayCircle, FaPlus } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { MdDelete } from "react-icons/md";
+import { deleteSimulations } from "@/apis/api";
 const Play = ({ list, onSelect }) => {
   const [openedCategories, setOpenedCategories] = useState({});
-
+  const [hoveredQuestion, setHoveredQuestion] = useState(null);
+  console.log(hoveredQuestion);
   // 카테고리 토글 핸들러
   const toggleCategory = (category) => {
     setOpenedCategories((prev) => ({
@@ -14,6 +17,13 @@ const Play = ({ list, onSelect }) => {
       [category]: !prev[category],
     }));
   };
+
+  const handleDelete = (category) => {
+    deleteSimulations(category);
+
+    setHoveredQuestion(null); // To re-render the component
+  };
+  console.log(list);
   const router = useRouter();
   return (
     <div>
@@ -31,7 +41,16 @@ const Play = ({ list, onSelect }) => {
         재생목록 추가하기
       </div>
       {Object.entries(list || {})?.map(([category, questions], index) => (
-        <div key={index}>
+        <div
+          key={index}
+          onMouseEnter={() => setHoveredQuestion(index)}
+          onMouseLeave={() => setHoveredQuestion(null)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <div
             onClick={() => toggleCategory(category)}
             style={{
@@ -63,6 +82,9 @@ const Play = ({ list, onSelect }) => {
                   fontSize: "0.9rem",
                   height: "4vh",
                   cursor: "pointer",
+                  position: "relative",
+                  background:
+                    hoveredQuestion === idx ? "#f0f0f0" : "transparent",
                 }}
                 key={idx}
                 onClick={() => onSelect(item)}
@@ -81,12 +103,23 @@ const Play = ({ list, onSelect }) => {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
+                    width: "80%",
                   }}
                 >
                   {item.question}
                 </div>
               </div>
             ))}
+          {hoveredQuestion === index && (
+            <div
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={(e) => handleDelete(category)}
+            >
+              <MdDelete size="1.2em" />
+            </div>
+          )}
         </div>
       ))}
     </div>

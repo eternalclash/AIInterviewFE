@@ -24,10 +24,12 @@ const Preset = ({ list, onSelect }) => {
           height: "4vh",
           cursor: "pointer",
         }}
-        onClick={() => onSelect({
-          question:"",
-          answer:""
-        })}
+        onClick={() =>
+          onSelect({
+            question: "",
+            answer: "",
+          })
+        }
       >
         <FaPlus style={{ paddingBottom: "0.5%", marginRight: "0.5vw" }} />
         면접리스트 추가하기
@@ -65,6 +67,7 @@ const Preset = ({ list, onSelect }) => {
                   fontSize: "0.9rem",
                   height: "4vh",
                   cursor: "pointer",
+                  marginBottom: "0.5vh",
                 }}
                 key={idx}
                 onClick={() => onSelect(item)}

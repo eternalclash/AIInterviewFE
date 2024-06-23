@@ -13,10 +13,11 @@ import Play from "@/components/lists/Play";
 import styles from "@/styles/main.module.css";
 import { useRouter } from "next/router";
 import { AiFillCodepenCircle, AiFillProduct } from "react-icons/ai";
+import { MdSave } from "react-icons/md";
+
 import { messageState } from "@/state/messages";
-import { useEffect } from "react";
 import { getInterviews, getPresets, getSimulation } from "@/apis/api";
-import { get } from "http";
+
 
 const Sidebar = () => {
   const [{ clicked, list }, setSidebar] = useRecoilState(sidebarState);
@@ -80,13 +81,21 @@ const Sidebar = () => {
   return (
     <div className={styles.sidebar}>
       <div style={{ minHeight: "25vh", width: "85%" }}>
-        <div className={styles.title} onClick={() => router.push("/")}>
+        <div
+          className={styles.title}
+          style={{ marginTop: "2vh" }}
+          onClick={() => router.push("/")}
+        >
           <AiFillCodepenCircle className={styles.mr} size={20} />
           AI면접리스트 생성기
         </div>
-        <div className={styles.title2} onClick={() => router.push("/simulate")}>
+        <div className={styles.title} onClick={() => router.push("/simulate")}>
           <AiFillProduct className={styles.mr} size={20} />
           모의면접 실행하기
+        </div>
+        <div className={styles.title} onClick={() => router.push("/saveList")}>
+          <MdSave className={styles.mr} size={20} />
+          지난 모의면접 보기
         </div>
         <div className={`${styles.line}`}></div>
         <div
@@ -105,6 +114,7 @@ const Sidebar = () => {
         >
           나의 면접리스트
         </div>
+
         <div
           className={`${styles.sideBtn} ${
             clicked === SIDE_TYPE.PLAY ? styles.clicked : ""
@@ -113,7 +123,6 @@ const Sidebar = () => {
         >
           모의면접 재생목록
         </div>
-
       </div>
       <div className={styles.sideComponent}>
         <div className={styles.dateTitle}>
@@ -122,7 +131,6 @@ const Sidebar = () => {
             (clicked === SIDE_TYPE.PRESET && "면접 예상질문")}
         </div>
         {(clicked === SIDE_TYPE.PRESET && (
-          
           <Preset list={list} onSelect={handleSelectMessage} />
         )) ||
           (clicked === SIDE_TYPE.LIST && (

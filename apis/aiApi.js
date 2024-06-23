@@ -4,6 +4,10 @@ export const getIdToken = (param) => {
     return aiAxiosClient.get(`/recommend`);
   };
   
-  export const postIdToken = (idToken) => {
-    return aiAxiosClient.post(`/recommend`, { idToken });
+  export const postPopularity = (data) => {
+    return aiAxiosClient.post(`/recommend`,  data);
+  };
+
+  export const postEase = (data) => {
+    return aiAxiosClient.post(`/recommend`,  data);
   };

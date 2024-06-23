@@ -3,31 +3,55 @@ import { useSpeechRecognition } from "react-speech-kit";
 import styles from "@/styles/main.module.css";
 import { MdKeyboardVoice } from "react-icons/md";
 import { FaRegStopCircle } from "react-icons/fa";
+import useAudioRecorder from "@/hooks/useAudioRecorder";
+import axios from "axios";
+import { postAudio } from "@/apis/api";
 
-const Speech = ({ userAnswer, setUserAnswer, handleSubmitAnswer }) => {
+const Speech = ({
+  userAnswer,
+  setUserAnswer,
+  handleSubmitAnswer,
+  currentIndex,
+}) => {
   const [lang, setLang] = useState("en-AU");
   const [value, setValue] = useState("");
   const [blocked, setBlocked] = useState(false);
-  const [total, setTotal] = useState(""); // 누적된 텍스트를 저장하는 상태
   const timeoutRef = useRef(null);
 
-  const languageOptions = [
-    { label: "Cambodian", value: "km-KH" },
-    { label: "Deutsch", value: "de-DE" },
-    { label: "English", value: "en-AU" },
-    { label: "Farsi", value: "fa-IR" },
-    { label: "Français", value: "fr-FR" },
-    { label: "Italiano", value: "it-IT" },
-    { label: "普通话 (中国大陆) - Mandarin", value: "zh" },
-    { label: "Portuguese", value: "pt-BR" },
-    { label: "Español", value: "es-MX" },
-    { label: "Svenska - Swedish", value: "sv-SE" },
-  ];
+  const { audioBlob, isRecording, startRecording, stopRecording, submitAudio } =
+    useAudioRecorder();
 
-  const handleStop = () => {
-    handleSubmitAnswer();
-    toggle();
+  const handleStop = async () => {
+    stop();
+    stopRecording();
   };
+
+  const uploadAudioBlob = async (blob) => {
+    const formData = new FormData();
+    formData.append("file", blob, "recording.wav");
+    let data = {
+      fileExtension: "audio/wav",
+      fileOrder: currentIndex,
+    };
+    let res = (await postAudio(data)).data.result.presignedUrl;
+    try {
+      const response = await axios.put(res, blob, {
+        headers: {
+          "Content-Type": "audio/wav",
+        },
+      });
+      console.log("Upload success:", response);
+    } catch (error) {
+      console.error("Upload error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (audioBlob) {
+      uploadAudioBlob(audioBlob);
+      handleSubmitAnswer();
+    }
+  }, [audioBlob]);
 
   const onEnd = () => {
     // You could do something here after listening has finished
@@ -55,10 +79,14 @@ const Speech = ({ userAnswer, setUserAnswer, handleSubmitAnswer }) => {
   });
 
   const toggle = listening
-    ? stop
+    ? () => {
+        stop();
+        stopRecording();
+      }
     : () => {
         setBlocked(false);
         listen();
+        startRecording();
       };
 
   useEffect(() => {

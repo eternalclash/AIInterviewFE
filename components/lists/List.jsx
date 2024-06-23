@@ -1,6 +1,8 @@
 import { GetServerSideProps } from "next";
 import { FaFolder, FaFile, FaList } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+
 const List = ({ list, onSelect }) => {
   return (
     <div>

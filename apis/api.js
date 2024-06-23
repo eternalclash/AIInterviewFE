@@ -35,17 +35,23 @@ export const getAPI = () => {
   return kakaoClient.get();
 };
 
-export const executeSimulations = (data) => {
-  return axiosClient.post("/simulations/execute",data)
-}
-
-export const getSimulations = () => {
-  return axiosClient.get("/simulations").then((response)=>response.data.result);
+export const startSimulation = (data) => {
+  return axiosClient.post("/simulations/start", data);
 };
 
-export const getSimulation = () =>{
+export const executeSimulations = (data) => {
+  return axiosClient.post("/simulations/execute", data);
+};
+
+export const getSimulations = () => {
+  return axiosClient
+    .get("/simulations")
+    .then((response) => response.data.result);
+};
+
+export const getSimulation = () => {
   return axiosClient.get("/simulations");
-}
+};
 
 export const deleteSimulations = (id) => {
   return axiosClient.delete(`/simulations/${id}`);
@@ -59,7 +65,9 @@ export const postSimulationsLog = () => {
 };
 
 export const getSimulationsLog = () => {
-  return axiosClient.get("/simulations/log");
+  return axiosClient
+    .get("/simulations/log")
+    .then((response) => response.data.result);
 };
 
 export const getInterviews = () => {
@@ -76,4 +84,20 @@ export const deleteInterviews = (id) => {
 
 export const putInterviews = (id, data) => {
   return axiosClient.put(`/interviews/${id}`, data);
+};
+
+export const postAudio = (data) => {
+  return axiosClient.post(
+    `/audio?fileExtension=${data.fileExtension}&fileOrder=${data.fileOrder}`
+  );
+};
+
+export const getAudio = (data) => {
+  return axiosClient.get(
+    `/audio?simulationLogId=${data.id}&simulationSize=${data.length}&fileNameExtension=${data.type}`
+  );  
+}
+
+export const putAudio = (data) => {
+  return axiosClient.put(`${data.presignedUrl}`, { fileName: data.fileName });
 };
