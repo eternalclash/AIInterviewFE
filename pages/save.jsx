@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "@/styles/main.module.css";
 import { useRecoilState } from "recoil";
-import { playListState } from "@/state/playState.js"; // Adjust the path according to your project structure
+import { saveState } from "@/state/saveState.js"; // Adjust the path according to your project structure
 import QuestionList from "@/components/QuestionList";
 import NavigationButtons from "@/components/NavigationButtons";
 import QuestionAnswerArea from "@/components/QuestionAnswerArea";
@@ -27,7 +27,7 @@ const Save = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [popup, setPopup] = useState(false);
   const [modal, setModal] = useState(false);
-  const [playState, setPlayState] = useRecoilState(playListState);
+  const [playState, setPlayState] = useRecoilState(saveState);
   const [audState, setAudioState] = useRecoilState(audioState);
 
   let answered = Array.from({ length: playState.length }, (e, idx) => idx);
@@ -42,9 +42,8 @@ const Save = () => {
       .catch((error) => console.error(error));
   }
 
-  const [url,setUrl] = useState(audState[currentIndex]);
-  console.log(uploadImageToS3(audState[currentIndex]))
-
+  const [url, setUrl] = useState(audState[currentIndex]);
+  console.log(uploadImageToS3(audState[currentIndex]));
 
   const [problemList, setProblemList] = useState(
     playState.map((item) => ({
@@ -172,6 +171,7 @@ const Save = () => {
             setCurrentIndex={setCurrentIndex}
             handleMoveIndex={handleMoveIndex}
           />
+          <audio controls src={url}></audio>
         </div>
       </div>
       <QuestionAnswerArea
@@ -190,7 +190,6 @@ const Save = () => {
         handleRestart={handleRestart}
         handleNext={handleNext}
       />
-          <audio controls src={url}></audio>
     </div>
   );
 };

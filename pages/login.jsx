@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import useUserStore from "@/store/user";
 import { GetServerSideProps } from "next";
 import styles from "@/styles/main.module.css";
 import Image from "next/image";
@@ -7,8 +6,11 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { AiFillCodepenCircle } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { getIdToken, getPresets, postLogin } from "@/apis/api";
+import { useRecoilState } from "recoil";
+import { loginState } from "@/state/loginState";
 const Login = () => {
   const router = useRouter();
+  const [loginText, setLoginText] = useRecoilState(loginState);
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -53,8 +55,10 @@ const Login = () => {
       console.log(response.data);
       localStorage.setItem("refreshToken", response.data.result.refreshToken);
       localStorage.setItem("accessToken", response.data.result.accessToken);
-      localStorage.setItem("userId",response.data.result.loginMemberId);
-      console.log("Login successful");
+      localStorage.setItem("userId", response.data.result.loginMemberId);
+      window.alert("로그인 되었습니다!");
+      setLoginText("로그아웃");
+
       router.push("/");
       // 로그인 후 리다이렉트 등의 추가 로직
     } catch (error) {
@@ -63,15 +67,6 @@ const Login = () => {
     }
   };
 
-  const {
-    name,
-    password,
-    errorObj,
-    nameHandler,
-    passwordHandler,
-    loginHandler,
-    navigateMain,
-  } = useUserStore();
   const [index, setIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
 
@@ -130,6 +125,7 @@ const Login = () => {
           src="/카카오톡.png"
           alt="카카오톡 로고"
           className={styles.kakao}
+          style={{ cursor: "pointer" }}
           onClick={redirectToKakaoOAuth}
         />
       </div>

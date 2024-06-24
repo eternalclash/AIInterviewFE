@@ -5,8 +5,11 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { MdDelete } from "react-icons/md";
-import { deleteSimulations } from "@/apis/api";
-const Play = ({ list, onSelect }) => {
+import { deleteSimulations, getSimulation } from "@/apis/api";
+import { sidebarState } from "@/state/sidebarState";
+import { useRecoilState } from "recoil";
+import { SIDE_TYPE } from "@/utils/constants";
+const Play = ({ list, onSelect, setSidebar }) => {
   const [openedCategories, setOpenedCategories] = useState({});
   const [hoveredQuestion, setHoveredQuestion] = useState(null);
   console.log(hoveredQuestion);
@@ -18,9 +21,13 @@ const Play = ({ list, onSelect }) => {
     }));
   };
 
-  const handleDelete = (category) => {
-    deleteSimulations(category);
-
+  const handleDelete = async (category) => {
+    await deleteSimulations(category);
+    let dataResponse = await getSimulation();
+    setSidebar({
+      list: dataResponse?.data.result,
+      clicked: SIDE_TYPE.PLAY,
+    });
     setHoveredQuestion(null); // To re-render the component
   };
   console.log(list);
@@ -47,8 +54,10 @@ const Play = ({ list, onSelect }) => {
           onMouseLeave={() => setHoveredQuestion(null)}
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            alignItems: "space-between",
+            justifyContent: "center",
+            flexDirection: "column",
+            position: "relative",
           }}
         >
           <div
@@ -71,10 +80,10 @@ const Play = ({ list, onSelect }) => {
               }}
             />
             <FaPlayCircle size="1.2em" style={{ marginRight: "0.5vw" }} />
-            <div>{category}</div>
+            <div>{questions.simulationListName}</div>
           </div>
           {openedCategories[category] &&
-            questions.map((item, idx) => (
+            questions.simulationList.map((item, idx) => (
               <div
                 style={{
                   display: "flex",
@@ -83,8 +92,6 @@ const Play = ({ list, onSelect }) => {
                   height: "4vh",
                   cursor: "pointer",
                   position: "relative",
-                  background:
-                    hoveredQuestion === idx ? "#f0f0f0" : "transparent",
                 }}
                 key={idx}
                 onClick={() => onSelect(item)}
@@ -113,9 +120,12 @@ const Play = ({ list, onSelect }) => {
           {hoveredQuestion === index && (
             <div
               style={{
+                position: "absolute",
+                right: "0%",
+                top: "0%",
                 cursor: "pointer",
               }}
-              onClick={(e) => handleDelete(category)}
+              onClick={(e) => handleDelete(questions.simulationListId)}
             >
               <MdDelete size="1.2em" />
             </div>

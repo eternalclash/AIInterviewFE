@@ -26,8 +26,8 @@ const Preset = ({ list, onSelect }) => {
         }}
         onClick={() =>
           onSelect({
-            question: "",
-            answer: "",
+            question: "면접 질문을 만들어보세요",
+            answer: "새로 답변을 만들어보세요",
           })
         }
       >

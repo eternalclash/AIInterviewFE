@@ -18,7 +18,6 @@ import { MdSave } from "react-icons/md";
 import { messageState } from "@/state/messages";
 import { getInterviews, getPresets, getSimulation } from "@/apis/api";
 
-
 const Sidebar = () => {
   const [{ clicked, list }, setSidebar] = useRecoilState(sidebarState);
   const [{ question, answer }, setMessageState] = useRecoilState(messageState);
@@ -137,7 +136,11 @@ const Sidebar = () => {
             <List list={list} onSelect={handleListMessage} />
           )) ||
           (clicked === SIDE_TYPE.PLAY && (
-            <Play list={list} onSelect={handleSelectMessage} />
+            <Play
+              list={list}
+              setSidebar={setSidebar}
+              onSelect={handleSelectMessage}
+            />
           ))}
       </div>
     </div>

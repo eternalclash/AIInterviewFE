@@ -8,6 +8,7 @@ import { getSimulations, startSimulation } from "@/apis/api"; // Adjust the path
 import AudioPermissionModal from "@/components/AudioPermissionModal"; // Adjust the path according to your project structure
 import { useRecoilState } from "recoil";
 import { playListState } from "@/state/playState.js";
+
 const Simulate = () => {
   const [playState, setPlayState] = useRecoilState(playListState);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
@@ -19,7 +20,6 @@ const Simulate = () => {
     queryKey: ["simulations"],
     queryFn: getSimulations,
   });
-  console.log(data);
 
   useEffect(() => {
     checkAudioPermission();
@@ -39,15 +39,12 @@ const Simulate = () => {
   };
 
   const handlePlaylistClick = (playlist) => {
-    setSelectedPlaylist(playlist[0]);
-    setPlayState(playList[playlist].simulationList);
-    console.log(playList[playlist]);
-    console.log(playState);
+    console.log(playlist);
+    setSelectedPlaylist(playlist.simulationListName);
+    setPlayState(playlist.simulationList);
   };
 
-  console.log(selectedPlaylist);
-
-  const playList = isSuccess ? data : {};
+  const playList = isSuccess ? data : [];
 
   return (
     <div
@@ -106,7 +103,7 @@ const Simulate = () => {
       >
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error loading playlists</p>}
-        {Object?.entries(playList).map(([playlist, x], index) => (
+        {playList.map((playlist, index) => (
           <div
             key={index}
             onClick={() => handlePlaylistClick(playlist)}
@@ -118,11 +115,16 @@ const Simulate = () => {
               fontSize: "1.3rem",
               cursor: "pointer",
               background:
-                selectedPlaylist === playlist[0] ? "white" : "transparent",
-              color: selectedPlaylist === playlist[0] ? "black" : "inherit",
+                selectedPlaylist === playlist.simulationListName
+                  ? "white"
+                  : "transparent",
+              color:
+                selectedPlaylist === playlist.simulationListName
+                  ? "black"
+                  : "inherit",
             }}
           >
-            {playList[playlist].simulationListName}
+            {playlist.simulationListName}
           </div>
         ))}
       </div>

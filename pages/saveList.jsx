@@ -12,11 +12,11 @@ import {
 } from "@/apis/api"; // Adjust the path according to your project structure
 import AudioPermissionModal from "@/components/AudioPermissionModal"; // Adjust the path according to your project structure
 import { useRecoilState } from "recoil";
-import { playListState } from "@/state/playState.js";
+import { saveState } from "@/state/saveState.js";
 import { audioState } from "@/state/audioUrls.js";
 
 const SaveList = () => {
-  const [playState, setPlayState] = useRecoilState(playListState);
+  const [playState, setPlayState] = useRecoilState(saveState);
   const [audState, setAudioState] = useRecoilState(audioState);
   const [selectedPlaylist, setSelectedPlaylist] = useState(-1);
   const [audioGranted, setAudioGranted] = useState(false);

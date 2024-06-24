@@ -38,21 +38,21 @@ const Main = ({ initialData }) => {
   };
 
   useEffect(() => {
-    const fetchPopularQuestions = async () => {
-      const response = await fetchData("popularity");
-      console.log(response.data);
-      setPopularQuestions(response.data.recommendations);
-    };
+    // const fetchPopularQuestions = async () => {
+    //   const response = await fetchData("popularity");
+    //   console.log(response.data);
+    //   setPopularQuestions(response.data.recommendations);
+    // };
 
-    const fetchEaseQuestions = async () => {
-      const response = await fetchData("ease");
-      console.log(response.data);
-      setEaseQuestions(response.data.recommendations);
-    };
+    // const fetchEaseQuestions = async () => {
+    //   const response = await fetchData("ease");
+    //   console.log(response.data);
+    //   setEaseQuestions(response.data.recommendations);
+    // };
 
-    fetchEaseQuestions();
+    // fetchEaseQuestions();
 
-    fetchPopularQuestions();
+    // fetchPopularQuestions();
   }, []);
 
   return (
