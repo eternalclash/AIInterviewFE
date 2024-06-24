@@ -41,7 +41,7 @@ const Login = () => {
   // Kakao 로그인 페이지로 리다이렉트
   const redirectToKakaoOAuth = () => {
     const kakaoLoginUrl =
-      "https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=http://localhost:3000/login";
+      "https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=https://main--illustrious-mooncake-3b9c7b.netlify.app/login";
     window.location.href = kakaoLoginUrl;
   };
 
