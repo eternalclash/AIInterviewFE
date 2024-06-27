@@ -60,6 +60,7 @@ const Sidebar = () => {
       question: item?.question,
       answer: item?.answer,
       presetQaId: item?.presetQaId,
+      canEdit: item?.canEdit,
     });
     router.push("/messages");
   };

@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL =
-  "http://ec2-43-201-191-87.ap-northeast-2.compute.amazonaws.com:8080/";
+export const BASE_URL = "https://ml.ssabang.site/";
 
 export const HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -12,7 +11,6 @@ export const aiAxiosClient = axios.create({
   baseURL: BASE_URL,
   headers: HEADERS,
 });
-
 
 aiAxiosClient.interceptors.response.use(
   (response) => {

@@ -151,44 +151,46 @@ const Messages = () => {
               />
             )}
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "90%",
-              justifyContent: "flex-end",
-            }}
-          >
+          {messages.canEdit == true && (
             <div
               style={{
-                border: "1px solid var(--gray-400)",
-                padding: "1%",
-                borderRadius: "1%",
-                marginRight: "1vw",
                 display: "flex",
-                alignItems: "center",
-                fontSize: "0.9rem",
-                cursor: "pointer",
+                width: "90%",
+                justifyContent: "flex-end",
               }}
-              onClick={() => handlePostAnswer()}
             >
-              AI 답변생성
+              <div
+                style={{
+                  border: "1px solid var(--gray-400)",
+                  padding: "1%",
+                  borderRadius: "1%",
+                  marginRight: "1vw",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "0.9rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => handlePostAnswer()}
+              >
+                AI 답변생성
+              </div>
+              <div
+                style={{
+                  background: "white",
+                  color: "black",
+                  padding: "1%",
+                  borderRadius: "1%",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "0.9rem",
+                  cursor: "pointer",
+                }}
+                onClick={handleSave}
+              >
+                면접리스트 등록
+              </div>
             </div>
-            <div
-              style={{
-                background: "white",
-                color: "black",
-                padding: "1%",
-                borderRadius: "1%",
-                display: "flex",
-                alignItems: "center",
-                fontSize: "0.9rem",
-                cursor: "pointer",
-              }}
-              onClick={handleSave}
-            >
-              면접리스트 등록
-            </div>
-          </div>
+          )}
         </div>
         <div className={styles.bottom}></div>
       </div>

@@ -43,15 +43,12 @@ const Main = ({ initialData }) => {
       console.log(response.data);
       setPopularQuestions(response.data.recommendations);
     };
-
     const fetchEaseQuestions = async () => {
       const response = await fetchData("ease");
       console.log(response.data);
       setEaseQuestions(response.data.recommendations);
     };
-
     fetchEaseQuestions();
-
     fetchPopularQuestions();
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSpeechRecognition } from "react-speech-kit";
 import styles from "@/styles/main.module.css";
 import { MdKeyboardVoice } from "react-icons/md";
@@ -13,13 +13,87 @@ const Speech = ({
   handleSubmitAnswer,
   currentIndex,
 }) => {
-  const [lang, setLang] = useState("en-AU");
-  const [value, setValue] = useState("");
+  const [listening, setListening] = useState(false);
   const [blocked, setBlocked] = useState(false);
-  const timeoutRef = useRef(null);
-
-  const { audioBlob, isRecording, startRecording, stopRecording, submitAudio } =
+  const { audioBlob, isRecording, startRecording, stopRecording } =
     useAudioRecorder();
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    if (
+      !("webkitSpeechRecognition" in window) &&
+      !("SpeechRecognition" in window)
+    ) {
+      setBlocked(true);
+    } else {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = true;
+
+      recognition.onresult = (event) => {
+        let interimTranscript = "";
+        let finalTranscript = "";
+
+        for (let i = 0; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        setUserAnswer(finalTranscript);
+      };
+
+      recognition.onstart = () => {
+        setListening(true);
+      };
+
+      recognition.onend = () => {
+        setListening(false);
+        if (listening) {
+          recognition.start(); // Ensure it continues listening
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error", event.error);
+        setListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+  }, []);
+
+  const startListening = () => {
+    if (recognitionRef.current && !blocked) {
+      recognitionRef.current.start();
+      setListening(true);
+      startRecording(); // Start audio recording as well
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setListening(false);
+      stopRecording(); // Stop audio recording as well
+    }
+  };
+
+  const toggleListening = () => {
+    if (listening) {
+      stopListening();
+      stopRecording();
+    } else {
+      startListening();
+      startRecording();
+    }
+  };
 
   const handleStop = async () => {
     stop();
@@ -53,60 +127,6 @@ const Speech = ({
     }
   }, [audioBlob]);
 
-  const onEnd = () => {
-    // You could do something here after listening has finished
-  };
-
-  const onResult = (result) => {
-    console.log(result);
-    setValue(result);
-  };
-
-  const changeLang = (event) => {
-    setLang(event.target.value);
-  };
-
-  const onError = (event) => {
-    if (event.error === "not-allowed") {
-      setBlocked(true);
-    }
-  };
-
-  const { listen, listening, stop, supported } = useSpeechRecognition({
-    onResult,
-    onEnd,
-    onError,
-  });
-
-  const toggle = listening
-    ? () => {
-        stop();
-        stopRecording();
-      }
-    : () => {
-        setBlocked(false);
-        listen();
-        startRecording();
-      };
-
-  useEffect(() => {
-    if (value) {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      timeoutRef.current = setTimeout(() => {
-        setUserAnswer((prevTotal) => prevTotal + " " + value);
-        setValue(""); // value를 초기화하여 중복 방지
-      }, 1000);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [value]);
-
   return (
     <div
       style={{
@@ -124,7 +144,7 @@ const Speech = ({
         <MdKeyboardVoice
           disabled={blocked}
           type="button"
-          onClick={toggle}
+          onClick={toggleListening}
           size={40}
           style={{ cursor: "pointer" }}
         >
@@ -137,7 +157,7 @@ const Speech = ({
           id="speech-recognition-form"
           style={{ width: "100%", position: "relative" }}
         >
-          {supported && (
+          {
             <React.Fragment>
               <textarea
                 id="transcript"
@@ -149,7 +169,7 @@ const Speech = ({
                 className={styles.speech}
               />
               <FaRegStopCircle
-                onClick={handleStop}
+                onClick={toggleListening}
                 style={{
                   position: "absolute",
                   bottom: "0.5rem",
@@ -160,7 +180,7 @@ const Speech = ({
                 size={40}
               ></FaRegStopCircle>
             </React.Fragment>
-          )}
+          }
         </form>
       )}
     </div>

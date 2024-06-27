@@ -8,9 +8,11 @@ import { useRouter } from "next/router";
 import { getIdToken, getPresets, postLogin } from "@/apis/api";
 import { useRecoilState } from "recoil";
 import { loginState } from "@/state/loginState";
+
 const Login = () => {
   const router = useRouter();
   const [loginText, setLoginText] = useRecoilState(loginState);
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -30,6 +32,7 @@ const Login = () => {
       document.body.removeChild(script);
     };
   }, []);
+
   useEffect(() => {
     const { code } = router.query;
     if (code) {
@@ -40,8 +43,8 @@ const Login = () => {
 
   // Kakao 로그인 페이지로 리다이렉트
   const redirectToKakaoOAuth = () => {
-    const kakaoLoginUrl =
-      "https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=http://localhost:3000/login";
+    const currentUrl = window.location.origin;
+    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=${currentUrl}/login`;
     window.location.href = kakaoLoginUrl;
   };
 
@@ -82,6 +85,7 @@ const Login = () => {
   useEffect(() => {
     refIndex.current = index;
   }, [index]);
+
   const typeNextChar = (charIndex) => {
     if (charIndex < texts[index].length) {
       setDisplayText((prev) => prev + texts[index].charAt(charIndex));
@@ -144,7 +148,7 @@ const Login = () => {
   );
 };
 
-export const getServerSideProp = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   return {
     props: {},
   };

@@ -29,7 +29,9 @@ const Save = () => {
   const [modal, setModal] = useState(false);
   const [playState, setPlayState] = useRecoilState(saveState);
   const [audState, setAudioState] = useRecoilState(audioState);
-
+  const [url, setUrl] = useState(audState[currentIndex]);
+  console.log(audState);
+  console.log(url);
   let answered = Array.from({ length: playState.length }, (e, idx) => idx);
   const [answeredIndices, setAnsweredIndices] = useState(answered); // 상태 추가
 
@@ -41,9 +43,6 @@ const Save = () => {
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
   }
-
-  const [url, setUrl] = useState(audState[currentIndex]);
-  console.log(uploadImageToS3(audState[currentIndex]));
 
   const [problemList, setProblemList] = useState(
     playState.map((item) => ({
@@ -70,6 +69,7 @@ const Save = () => {
     console.log(answeredIndices.length);
     setIsLoading(true);
     setDisplayAnswer(false);
+    setUrl(audState[currentIndex]);
     console.log(problemList[currentIndex]);
     let answer = problemList[currentIndex].correctAnswer;
     let question = problemList[currentIndex].question;
@@ -98,6 +98,7 @@ const Save = () => {
   const handleNext = () => {
     if (currentIndex < playState.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      setUrl(audState[currentIndex + 1]);
       setUserAnswer("");
       setTakeAnswer(false);
       setDisplayAnswer(true);
@@ -107,6 +108,7 @@ const Save = () => {
   const handlePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setUrl(audState[currentIndex - 1]);
       setUserAnswer("");
       setTakeAnswer(false);
       setDisplayAnswer(true);
@@ -115,6 +117,7 @@ const Save = () => {
 
   const handleMoveIndex = (index) => {
     setCurrentIndex(index);
+    setUrl(audState[index]);
     setUserAnswer("");
     setTakeAnswer(false);
     setDisplayAnswer(true);

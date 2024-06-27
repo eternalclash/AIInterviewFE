@@ -14,8 +14,10 @@ const Preset = ({ list, onSelect }) => {
     }));
   };
 
+  console.log(list);
+
   return (
-    <div>
+    <div style={{ maxHeight: "40vh" }}>
       <div
         style={{
           display: "flex",
@@ -28,6 +30,7 @@ const Preset = ({ list, onSelect }) => {
           onSelect({
             question: "면접 질문을 만들어보세요",
             answer: "새로 답변을 만들어보세요",
+            canEdit: true,
           })
         }
       >
@@ -44,6 +47,7 @@ const Preset = ({ list, onSelect }) => {
               fontSize: "0.9rem",
               height: "4vh",
               cursor: "pointer",
+              maxHeight: "100%",
             }}
           >
             <IoIosArrowForward
@@ -70,7 +74,9 @@ const Preset = ({ list, onSelect }) => {
                   marginBottom: "0.5vh",
                 }}
                 key={idx}
-                onClick={() => onSelect(item)}
+                onClick={() =>
+                  onSelect({ ...item, presetQaId: item.id, canEdit: true })
+                }
               >
                 <div
                   style={{
