@@ -44,6 +44,8 @@ const Simulate = () => {
     setPlayState(playlist.simulationList);
   };
 
+  console.log(playState);
+
   const playList = isSuccess ? data : [];
 
   return (
@@ -85,6 +87,7 @@ const Simulate = () => {
           cursor: "pointer",
           marginBottom: "1vh",
         }}
+        onClick={() => router.push("/playList")}
       >
         <TiPlus size={30} style={{ paddingBottom: "1" }} />
         재생목록 만들기
@@ -146,7 +149,10 @@ const Simulate = () => {
             if (audioGranted) {
               console.log("플레이리스트명", selectedPlaylist);
 
-              await startSimulation({ simulationListName: selectedPlaylist });
+              await startSimulation({
+                simulationListName: selectedPlaylist,
+                simulationListSize: playState.length,
+              });
               router.push("/play");
             } else {
               setIsModalOpen(true); // Show permission request modal

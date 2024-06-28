@@ -33,6 +33,7 @@ const Main = ({ initialData }) => {
       question: item?.question,
       answer: item?.answer,
       presetQaId: item?.preset_qa_id,
+      canEdit: true,
     });
     router.push("/messages");
   };

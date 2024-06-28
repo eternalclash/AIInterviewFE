@@ -17,6 +17,7 @@ import { MdSave } from "react-icons/md";
 
 import { messageState } from "@/state/messages";
 import { getInterviews, getPresets, getSimulation } from "@/apis/api";
+import { useEffect } from "react";
 
 const Sidebar = () => {
   const [{ clicked, list }, setSidebar] = useRecoilState(sidebarState);
@@ -44,16 +45,16 @@ const Sidebar = () => {
     }
   };
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await getPresets();
-  //     setSidebar((prevState) => ({
-  //       ...prevState,
-  //       list: response.data.result,
-  //     }));
-  //   }
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await getPresets();
+      setSidebar((prevState) => ({
+        ...prevState,
+        list: response.data.result,
+      }));
+    }
+    fetchData();
+  }, []);
 
   const handleSelectMessage = (item) => {
     setMessageState({
@@ -80,22 +81,31 @@ const Sidebar = () => {
 
   return (
     <div className={styles.sidebar}>
-      <div style={{ minHeight: "25vh", width: "85%" }}>
+      <div style={{ width: "85%" }}>
         <div
           className={styles.title}
           style={{ marginTop: "2vh" }}
           onClick={() => router.push("/")}
         >
           <AiFillCodepenCircle className={styles.mr} size={20} />
-          AI면접리스트 생성기
+          PrepSmart
         </div>
         <div className={styles.title} onClick={() => router.push("/simulate")}>
           <AiFillProduct className={styles.mr} size={20} />
-          모의면접 실행하기
+          면접 실행하기
         </div>
-        <div className={styles.title} onClick={() => router.push("/saveList")}>
+        <div
+          className={styles.title}
+          onClick={() =>
+            handleSelectMessage({
+              question: "면접 질문을 만들어보세요",
+              answer: "새로 답변을 만들어보세요",
+              canEdit: true,
+            })
+          }
+        >
           <MdSave className={styles.mr} size={20} />
-          지난 모의면접 보기
+          면접질문 만들기
         </div>
         <div className={`${styles.line}`}></div>
         <div
@@ -104,7 +114,7 @@ const Sidebar = () => {
           }`}
           onClick={() => handleClick(SIDE_TYPE.PRESET)}
         >
-          면접 예상질문
+          면접 프리셋
         </div>
         <div
           className={`${styles.sideBtn} ${
@@ -112,7 +122,7 @@ const Sidebar = () => {
           }`}
           onClick={() => handleClick(SIDE_TYPE.LIST)}
         >
-          나의 면접리스트
+          MY 면접리스트
         </div>
 
         <div
@@ -121,7 +131,7 @@ const Sidebar = () => {
           }`}
           onClick={() => handleClick(SIDE_TYPE.PLAY)}
         >
-          모의면접 재생목록
+          MY 재생목록
         </div>
       </div>
       <div className={styles.sideComponent}>

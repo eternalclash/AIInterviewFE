@@ -92,6 +92,8 @@ export const postAudio = (data) => {
   );
 };
 
+
+
 export const getAudio = (data) => {
   return axiosClient.get(
     `/audio?simulationLogId=${data.id}&simulationSize=${data.length}&fileNameExtension=${data.type}`

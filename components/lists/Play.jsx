@@ -33,7 +33,7 @@ const Play = ({ list, onSelect, setSidebar }) => {
   console.log(list);
   const router = useRouter();
   return (
-    <div>
+    <div style={{ maxHeight: "70vh" }}>
       <div
         style={{
           display: "flex",

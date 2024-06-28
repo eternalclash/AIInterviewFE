@@ -41,9 +41,12 @@ const Login = () => {
     }
   }, [router]);
 
+  // const currentUrl = window.location.origin;
+  // console.log(currentUrl);
   // Kakao 로그인 페이지로 리다이렉트
   const redirectToKakaoOAuth = () => {
     const currentUrl = window.location.origin;
+    console.log(currentUrl);
     const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=03072686150feaab2501e63e2183ff64&response_type=code&redirect_uri=${currentUrl}/login`;
     window.location.href = kakaoLoginUrl;
   };

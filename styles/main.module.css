@@ -35,7 +35,6 @@
   position: relative;
 }
 
-
 .login {
   position: absolute;
   width: 100%;
@@ -88,8 +87,7 @@
   padding: 1%;
   background: var(--gray-500);
   border-radius: 1%;
-  z-index:99;
-  
+  z-index: 99;
 }
 
 .ml2 {
@@ -149,7 +147,6 @@
   word-wrap: break-word; /* 길게 입력된 단어를 자동으로 줄 바꿈 */
 }
 
-
 .ml5 {
   font-size: 0.9rem;
   color: white;
@@ -160,7 +157,6 @@
   font-family: Arial, sans-serif; /* 글꼴 설정 */
   font-size: 1rem; /* 글자 크기 설정 */
   width: 90%;
-
 
   resize: none; /* 사용자가 크기 조절하는 것을 방지 */
   background: var(--gray-500);
@@ -199,8 +195,6 @@
   height: 9.5vh;
   borderradius: "1%";
   resize: none; /* 사용자가 크기 조절하는 것을 방지 */
-
-
 }
 .hideScrollbar {
   scrollbar-width: none; /* Firefox */
@@ -240,12 +234,13 @@
 
 .sidebar {
   width: 25%;
-  height: 100vh;
+  max-height: 100vh;
   background-color: #171717;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
+  position: "absolute";
 }
 
 .component {
@@ -300,14 +295,16 @@
   margin-bottom: 1vh;
   display: flex;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 
   cursor: pointer;
 }
 
 .line {
   width: 100%;
-  height: 2vh;
+  height: 0.2vh;
+  background: white;
+  margin-bottom: 1vh;
 }
 
 .mr {

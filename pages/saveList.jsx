@@ -33,7 +33,7 @@ const SaveList = () => {
     const length = playlist.simulationLogs.length;
     const id = playlist.id;
     const type = "audio/wav";
-    let data = {length,id,type}
+    let data = { length, id, type };
     const response = await getAudio(data);
     console.log(response);
     setPlayState(playlist.simulationLogs);
@@ -47,7 +47,7 @@ const SaveList = () => {
 
   const playList = isSuccess ? data : [];
   console.log(playList, "playState");
-
+  console.log(selectedPlaylist);
   return (
     <div
       className={styles.main}
@@ -100,11 +100,26 @@ const SaveList = () => {
               fontSize: "1.3rem",
               cursor: "pointer",
               background: selectedPlaylist === index ? "white" : "transparent",
-              color: selectedPlaylist === index ? "black" : "inherit",
+              // color: selectedPlaylist === index ? "black" : "black",
+              color: "black",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
-            {p.title}
-            {formatDate(p.timestamp)}
+            <div
+              style={{
+                color: selectedPlaylist === index ? "black" : "white",
+              }}
+            >
+              {p.title}
+            </div>
+            <div
+              style={{
+                color: selectedPlaylist === index ? "black" : "white",
+              }}
+            >
+              {formatDate(p.timestamp)}
+            </div>
           </div>
         ))}
       </div>

@@ -23,7 +23,7 @@ const Header = () => {
     if (login == "로그아웃") {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      window.alert("로그아웃 되셨습니다")
+      window.alert("로그아웃 되셨습니다");
       setLogin("로그인");
       router.push("/");
     } else {
@@ -32,12 +32,21 @@ const Header = () => {
   };
 
   return (
-    <div
-      className={styles.header}
-      onClick={() => handleLogin()}
-      style={{ cursor: "pointer", padding: "1.5%" }}
-    >
-      {login}
+    <div className={styles.header}>
+      {login == "로그아웃" && (
+        <div
+          style={{ cursor: "pointer", padding: "1.5%" }}
+          onClick={() => router.push("/saveList")}
+        >
+          면접 기록
+        </div>
+      )}
+      <div
+        onClick={() => handleLogin()}
+        style={{ cursor: "pointer", padding: "1.5%" }}
+      >
+        {login}
+      </div>
     </div>
   );
 };
