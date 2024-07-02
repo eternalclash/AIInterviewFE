@@ -39,7 +39,7 @@ const PlayList = () => {
   };
 
   const handleCreatePlaylist = async () => {
-    const data = { simulationListName: playlistName, simulationListSize };
+    const data = { simulationListName: playlistName };
     const arr = [];
     for (let x of selectedPlaylists) {
       arr.push(x.id);
